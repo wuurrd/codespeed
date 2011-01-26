@@ -12,12 +12,10 @@ temp = datetime.today()
 
 data = {
     'commitid': '1',
-    'project': 'MyProject',
-    'revision_date': '', # Optional. Default is taken
-                         # either from VCS integration or from current date
-    'executable': 'myexe O3 64bits',
+    'project': 'snoopy',
+    'executable': 'phonebook_search',
     'benchmark': 'float',
-    'environment': "Dual Core",
+    'environment': "snoopy",
     'result_value': 4000,
     'result_date': datetime.today(), # Optional
     'std_dev': 1.11111, # Optional. Default is blank
