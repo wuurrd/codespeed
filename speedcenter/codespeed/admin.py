@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from codespeed.models import Project, Revision, Executable, Benchmark, Result, Environment
+from codespeed.models import Project, Revision, Executable, Benchmark
+from codespeed.models import Result, Environment, Report
 from django.contrib import admin
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -21,6 +22,7 @@ admin.site.register(Executable, ExecutableAdmin)
 
 class BenchmarkAdmin(admin.ModelAdmin):
     list_display = ('name', 'benchmark_type', 'description', 'units_title', 'units', 'lessisbetter')
+    ordering = ['name']
 
 admin.site.register(Benchmark, BenchmarkAdmin)
 
@@ -34,3 +36,9 @@ class ResultAdmin(admin.ModelAdmin):
     list_filter  = ('date', 'executable', 'benchmark', 'environment')
 
 admin.site.register(Result, ResultAdmin)
+
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ('revision', 'summary', 'colorcode')
+    ordering = ['-revision']
+    
+admin.site.register(Report, ReportAdmin)

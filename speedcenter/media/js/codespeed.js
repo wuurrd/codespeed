@@ -31,7 +31,7 @@ function getLoadText(text, h, showloader) {
 
 //colors number based on a threshold
 function getColorcode(change, theigh, tlow) {
-    var colorcode = "status-yellow";
+    var colorcode = "status-none";
     if(change < tlow) { colorcode = "status-red"; }
     else if(change > theigh) { colorcode = "status-green"; }
     return colorcode;
@@ -226,15 +226,17 @@ function renderComparisonPlot(plotid, benchmarks, exes, enviros, baseline, chart
             // Not good when there is a 0 bar. It even shows negative bars when all bars are 0
         }
         
-        //determine optimal height
+        // Determine optimal height
         if (chart =="stacked bars") {
             h = 90 + ticks.length * (plotoptions.seriesDefaults.rendererOptions.barPadding*2 + barWidth);
         } else {
             h = barcounter * (plotoptions.seriesDefaults.rendererOptions.barPadding*2 + barWidth) + benchcounter * plotoptions.seriesDefaults.rendererOptions.barMargin * 2;
         }
-        
-        if (h > 820) {
+        // Adjust plot height
+        if (h > 700) {
             h = h/2;
+            if (h < 700) { h = 700; }
+            else if (h > 2000) { h = 2000; }
             plotoptions.seriesDefaults.rendererOptions.barPadding = 0;
             plotoptions.seriesDefaults.rendererOptions.barMargin = 8;
             plotoptions.seriesDefaults.shadow = false;
@@ -305,7 +307,7 @@ function renderComparisonPlot(plotid, benchmarks, exes, enviros, baseline, chart
     
     // determine conditions for rendering the legend outside the plot area
     var offplot = false;
-    if (!horizontal && (series.length > 4 || ticks.length == 1)) { offplot = true; }
+    if (!horizontal && series.length > 4) { offplot = true; }
     else if (horizontal && series.length > 2*ticks.length) { offplot = true; }
     
     if (offplot) {
@@ -319,6 +321,8 @@ function renderComparisonPlot(plotid, benchmarks, exes, enviros, baseline, chart
         plotoptions.legend.xoffset = -offset;
         $("#" + plotid).css("margin-right", offset + 10);
         if (w + offset > plotwidth) { w = plotwidth - offset -20; }
+    } else if (!horizontal && ticks.length <= 2) {
+        plotoptions.legend = {show: true, location: 'se'};
     }
     
     // Set bar type
